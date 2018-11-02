@@ -17,7 +17,7 @@ Build a Math Tutor on Alexa in Python using ASK Python SDK
 *  A basic understanding of Python.
 
 ## What Your Skill Will Do
-The Skill allows users to request a quiz about the 50 States of the USA. They will receive 10 random questions or they can ask for specific information, such as, "tell me about New York".
+The Skill allows users to request a quiz about some simple math questions. They will receive 10 random questions.
 This simple "quiz" skill will teach you how the different pieces of the Alexa Skill development process fit together.
 
 We use will use the Skill builder UI to build the Skill although the quiz itself does not employ the new "Dialog-Delegate interface" model.
