@@ -17,8 +17,7 @@ def get_random_state(states_list):
 
 def state_properties():
     """Return the list of state properties."""
-    val = ["abbreviation", "capital", "statehood_year",
-           "statehood_order"]
+    val = ["answer"]
     return val
 
 
@@ -113,7 +112,7 @@ def __get_attr_for_speech(attr):
 
 def get_question_without_ordinal(attr, item):
     return "What is the {} of {}. ".format(
-        __get_attr_for_speech(attr), item["state"])
+        __get_attr_for_speech(attr), __get_attr_for_speech(item["state"]))
 
 
 def get_question(counter, attr, item):
@@ -129,10 +128,10 @@ def get_answer(attr, item):
     if attr.lower() == "abbreviation":
         return ("The {} of {} is "
                 "<say-as interpret-as='spell-out'>{}</say-as>. ").format(
-            __get_attr_for_speech(attr), item["state"], item["abbreviation"])
+            __get_attr_for_speech(attr),  __get_attr_for_speech(item["state"]), item["abbreviation"])
     else:
         return "The {} of {} is {}. ".format(
-            __get_attr_for_speech(attr), item["state"], item[attr.lower()])
+            __get_attr_for_speech(attr),  __get_attr_for_speech(item["state"]), item[attr.lower()])
 
 
 def ask_question(handler_input):
