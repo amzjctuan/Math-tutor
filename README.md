@@ -1,4 +1,4 @@
-Build An Alexa Quiz Skill in Python using ASK Python SDK
+Build a Math Tutor on Alexa in Python using ASK Python SDK
 =============
 
 ```//![Tutorial Header](https://m.media-amazon.com/images/G/01/mobile-apps/dex/alexa/alexa-skills-kit/tutorials/fact/header._TTH_.png)```
