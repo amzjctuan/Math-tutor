@@ -116,10 +116,11 @@ class QuizHandler(AbstractRequestHandler):
         attr["state"] = "QUIZ"
         attr["counter"] = 0
         attr["quiz_score"] = 0
+        attr["type"] = "random"
 
         question = util.ask_question(handler_input)
         response_builder = handler_input.response_builder
-        response_builder.speak(data.START_QUIZ_MESSAGE + question)
+        response_builder.speak(data.START_QUIZ_MESSAGE.format(attr["type"] ) + question)
         response_builder.ask(question)
 
         if data.USE_CARDS_FLAG:
@@ -158,6 +159,102 @@ class QuizHandler(AbstractRequestHandler):
                         list_items=item_list)))
 
         return response_builder.response
+
+class AdditionHandler(AbstractRequestHandler):
+  
+    def can_handle(self, handler_input):
+        # type: (HandlerInput) -> bool
+        return (is_intent_name("AdditionIntent")(handler_input) or
+                is_intent_name("AMAZON.StartOverIntent")(handler_input))
+
+    def handle(self, handler_input):
+        # type: (HandlerInput) -> Response
+
+        logger.info("In AdditionHandler")
+        attr = handler_input.attributes_manager.session_attributes
+        attr["state"] = "QUIZ"
+        attr["counter"] = 0
+        attr["quiz_score"] = 0
+        attr["type"] = "addition"
+
+        question = util.ask_addition(handler_input)
+        response_builder = handler_input.response_builder
+        response_builder.speak(data.START_QUIZ_MESSAGE.format(str(attr["type"])) + question)
+        response_builder.ask(question)
+
+
+        return response_builder.response
+
+class SubtractionHandler(AbstractRequestHandler):
+    
+    def can_handle(self, handler_input):
+        # type: (HandlerInput) -> bool
+        return (is_intent_name("SubtractionIntent")(handler_input) or
+                is_intent_name("AMAZON.StartOverIntent")(handler_input))
+
+    def handle(self, handler_input):
+        # type: (HandlerInput) -> Response
+        logger.info("In SubtractionHandler")
+        attr = handler_input.attributes_manager.session_attributes
+        attr["state"] = "QUIZ"
+        attr["counter"] = 0
+        attr["quiz_score"] = 0
+        attr["type"] = "subtraction"
+
+        question = util.ask_subtraction(handler_input)
+        response_builder = handler_input.response_builder
+        response_builder.speak(data.START_QUIZ_MESSAGE.format(str(attr["type"])) + question)
+        response_builder.ask(question)
+
+        return response_builder.response
+
+class MultiplicationHandler(AbstractRequestHandler):
+    
+    def can_handle(self, handler_input):
+        # type: (HandlerInput) -> bool
+        return (is_intent_name("MultiplicationIntent")(handler_input) or
+                is_intent_name("AMAZON.StartOverIntent")(handler_input))
+
+    def handle(self, handler_input):
+        # type: (HandlerInput) -> Response
+        logger.info("In MultiplicationHandler")
+        attr = handler_input.attributes_manager.session_attributes
+        attr["state"] = "QUIZ"
+        attr["counter"] = 0
+        attr["quiz_score"] = 0
+        attr["type"] = "multiplication"
+
+        question = util.ask_multiplication(handler_input)
+        response_builder = handler_input.response_builder
+        response_builder.speak(data.START_QUIZ_MESSAGE.format(str(attr["type"])) + question)
+        response_builder.ask(question)
+
+        return response_builder.response
+
+class DivisionHandler(AbstractRequestHandler):
+    
+    def can_handle(self, handler_input):
+        # type: (HandlerInput) -> bool
+        return (is_intent_name("DivisionIntent")(handler_input) or
+                is_intent_name("AMAZON.StartOverIntent")(handler_input))
+
+    def handle(self, handler_input):
+        # type: (HandlerInput) -> Response
+        logger.info("In DivisionHandler")
+        attr = handler_input.attributes_manager.session_attributes
+        attr["state"] = "QUIZ"
+        attr["counter"] = 0
+        attr["quiz_score"] = 0
+        attr["type"] = "division"
+
+        question = util.ask_division(handler_input)
+        response_builder = handler_input.response_builder
+        response_builder.speak(data.START_QUIZ_MESSAGE.format(str(attr["type"])) + question)
+        response_builder.ask(question)
+
+        return response_builder.response
+
+
 
 
 class DefinitionHandler(AbstractRequestHandler):
@@ -261,7 +358,22 @@ class QuizAnswerHandler(AbstractRequestHandler):
             # Ask another question
             speech += util.get_current_score(
                 attr["quiz_score"], attr["counter"])
-            question = util.ask_question(handler_input)
+            
+            if(attr.get("type")=="addition"):
+                question = util.ask_addition(handler_input)
+            
+            elif(attr.get("type")=="subtraction"):
+                question = util.ask_subtraction(handler_input)
+
+            elif(attr.get("type")=="multiplication"):
+                question = util.ask_multiplication(handler_input)
+
+            elif(attr.get("type")=="division"):
+                question = util.ask_division(handler_input)
+
+            else:
+                question = util.ask_question(handler_input)
+
             speech += question
             reprompt = question
 
@@ -451,6 +563,10 @@ class ResponseLogger(AbstractResponseInterceptor):
 # Add all request handlers to the skill.
 sb.add_request_handler(LaunchRequestHandler())
 sb.add_request_handler(QuizHandler())
+sb.add_request_handler(AdditionHandler())
+sb.add_request_handler(SubtractionHandler())
+sb.add_request_handler(MultiplicationHandler())
+sb.add_request_handler(DivisionHandler())
 sb.add_request_handler(DefinitionHandler())
 sb.add_request_handler(QuizAnswerHandler())
 sb.add_request_handler(QuizAnswerElementSelectedHandler())
