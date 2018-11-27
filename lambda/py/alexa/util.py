@@ -150,6 +150,70 @@ def ask_question(handler_input):
 
     return get_question(attr["counter"], random_property, random_state)
 
+def ask_addition(handler_input):
+    # (HandlerInput) -> None
+    """Get a random state and property, return question about it."""
+    random_state = get_random_state(data.ADDITION_LIST)
+    random_property = get_random_state_property()
+
+    attr = handler_input.attributes_manager.session_attributes
+
+    attr["quiz_item"] = random_state
+    attr["quiz_attr"] = random_property
+    attr["counter"] += 1
+
+    handler_input.attributes_manager.session_attributes = attr
+
+    return get_question(attr["counter"], random_property, random_state)
+
+def ask_subtraction(handler_input):
+    # (HandlerInput) -> None
+    """Get a random state and property, return question about it."""
+    random_state = get_random_state(data.SUBTRACTION_LIST)
+    random_property = get_random_state_property()
+
+    attr = handler_input.attributes_manager.session_attributes
+
+    attr["quiz_item"] = random_state
+    attr["quiz_attr"] = random_property
+    attr["counter"] += 1
+
+    handler_input.attributes_manager.session_attributes = attr
+
+    return get_question(attr["counter"], random_property, random_state)
+
+def ask_multiplication(handler_input):
+    # (HandlerInput) -> None
+    """Get a random state and property, return question about it."""
+    random_state = get_random_state(data.MULTIPLICATION_LIST)
+    random_property = get_random_state_property()
+
+    attr = handler_input.attributes_manager.session_attributes
+
+    attr["quiz_item"] = random_state
+    attr["quiz_attr"] = random_property
+    attr["counter"] += 1
+
+    handler_input.attributes_manager.session_attributes = attr
+
+    return get_question(attr["counter"], random_property, random_state)
+
+def ask_division(handler_input):
+    # (HandlerInput) -> None
+    """Get a random state and property, return question about it."""
+    random_state = get_random_state(data.DIVISION_LIST)
+    random_property = get_random_state_property()
+
+    attr = handler_input.attributes_manager.session_attributes
+
+    attr["quiz_item"] = random_state
+    attr["quiz_attr"] = random_property
+    attr["counter"] += 1
+
+    handler_input.attributes_manager.session_attributes = attr
+
+    return get_question(attr["counter"], random_property, random_state)
+
 
 def get_speechcon(correct_answer):
     """Return speechcon corresponding to the boolean answer correctness."""
