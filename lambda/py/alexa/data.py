@@ -83,14 +83,149 @@ STATES_LIST = [
     },
       ]
 
+ADDITION_LIST = [
+    {
+        'abbreviation': '2', 'answer': '2',
+        'state': 'one_plus_one', 'capital': '2',
+        'statehood_year': '2'
+    },   
+    {
+        'abbreviation': '4', 'answer': '4',
+        'state': 'two_plus_two', 'capital': '4',
+        'statehood_year': '4'
+    },
+    {
+        'abbreviation': '2', 'answer': '6',
+        'state': 'three_plus_three', 'capital': '2',
+        'statehood_year': '2'
+    },   
+    {
+        'abbreviation': '4', 'answer': '8',
+        'state': 'four_plus_four', 'capital': '4',
+        'statehood_year': '4'
+    },
+    {
+        'abbreviation': '2', 'answer': '10',
+        'state': 'five_plus_five', 'capital': '2',
+        'statehood_year': '2'
+    },   
+    {
+        'abbreviation': '4', 'answer': '12',
+        'state': 'six_plus_six', 'capital': '4',
+        'statehood_year': '4'
+    },
+      ]
+
+SUBTRACTION_LIST = [
+    {
+        'abbreviation': '2', 'answer': '0',
+        'state': 'one_minus_one', 'capital': '2',
+        'statehood_year': '2'
+    },   
+    {
+        'abbreviation': '4', 'answer': '1',
+        'state': 'two_minus_one', 'capital': '4',
+        'statehood_year': '4'
+    },
+    {
+        'abbreviation': '2', 'answer': '28',
+        'state': 'thirty_minus_two', 'capital': '2',
+        'statehood_year': '2'
+    },   
+    {
+        'abbreviation': '4', 'answer': '30',
+        'state': 'fourty_minus_ten', 'capital': '4',
+        'statehood_year': '4'
+    },
+    {
+        'abbreviation': '2', 'answer': '41',
+        'state': 'fifty_minus_nine', 'capital': '2',
+        'statehood_year': '2'
+    },   
+    {
+        'abbreviation': '4', 'answer': '49',
+        'state': 'sixty_minus_eleven', 'capital': '4',
+        'statehood_year': '4'
+    },
+      ]
+
+MULTIPLICATION_LIST = [
+    {
+        'abbreviation': '2', 'answer': '1',
+        'state': 'one_multiply_one', 'capital': '2',
+        'statehood_year': '2'
+    },   
+    {
+        'abbreviation': '4', 'answer': '4',
+        'state': 'two_multiply_two', 'capital': '4',
+        'statehood_year': '4'
+    },
+    {
+        'abbreviation': '2', 'answer': '60',
+        'state': 'thirty_multiply_two', 'capital': '2',
+        'statehood_year': '2'
+    },   
+    {
+        'abbreviation': '4', 'answer': '400',
+        'state': 'fourty_multiply_ten', 'capital': '4',
+        'statehood_year': '4'
+    },
+    {
+        'abbreviation': '2', 'answer': '450',
+        'state': 'fifty_multiply_nine', 'capital': '2',
+        'statehood_year': '2'
+    },   
+    {
+        'abbreviation': '4', 'answer': '420',
+        'state': 'sixty_multiply_eleven', 'capital': '4',
+        'statehood_year': '4'
+    },
+      ]
+
+DIVISION_LIST = [
+    {
+        'abbreviation': '2', 'answer': '5',
+        'state': 'ten_divide_two', 'capital': '2',
+        'statehood_year': '2'
+    },   
+    {
+        'abbreviation': '4', 'answer': '10',
+        'state': 'one-hundred_divide_ten', 'capital': '4',
+        'statehood_year': '4'
+    },
+    {
+        'abbreviation': '2', 'answer': '7',
+        'state': 'forty-nine_divide_seven', 'capital': '2',
+        'statehood_year': '2'
+    },   
+    {
+        'abbreviation': '4', 'answer': '9',
+        'state': 'eighty-one_divide_nine', 'capital': '4',
+        'statehood_year': '4'
+    },
+    {
+        'abbreviation': '2', 'answer': '7',
+        'state': 'twenty-one_divide_three', 'capital': '2',
+        'statehood_year': '2'
+    },   
+    {
+        'abbreviation': '4', 'answer': '5',
+        'state': 'twenty-five_divide_five', 'capital': '4',
+        'statehood_year': '4'
+    },
+      ]
+
+
 SKILL_TITLE = "Math Tutor Quiz Game"
 
-WELCOME_MESSAGE = ("Welcome to the Math Tutor Quiz Game!  "
-                   "You can ask me about any of the "
-                   "math questions, or you can ask me to "
-                   "start a quiz.  What would you like to do? ")
+WELCOME_MESSAGE = ( "Welcome to the Math Tutor Quiz Game!  "
+                    "You can start a math quiz game by selecting from four topics "
+                    "including addition, subtraction, multiplication and division "
+                  )
 
-START_QUIZ_MESSAGE = ("OK.  I will ask you 10 math questions ")
+START_QUIZ_MESSAGE = ("OK. I will ask you 5 {} math questions ")
+
+START_TOPIC_MESSAGE = ("There are four topics of math questions you can choose from: addition, multiplication, subtraction and division ")
 
 EXIT_SKILL_MESSAGE = ("Thank you for playing the Math Tutor Quiz Game!  "
                       "Let's play again soon!")
