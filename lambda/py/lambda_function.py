@@ -189,7 +189,7 @@ class AdditionHandler(AbstractRequestHandler):
             title = "Question #{}".format(str(attr["counter"]))
             background_img = Image(
                 sources=[ImageInstance(
-                    url="https://i.ytimg.com/vi/k5wC5krH8xo/maxresdefault.jpg")])
+                    url="https://ppt.cc/fd2Vix@.png")])
             item_list = []
             for ans in util.get_multiple_choice_answers(
                     item, item_attr, data.ADDITION_LIST):
@@ -235,7 +235,7 @@ class SubtractionHandler(AbstractRequestHandler):
             title = "Question #{}".format(str(attr["counter"]))
             background_img = Image(
                 sources=[ImageInstance(
-                    url="https://i.ytimg.com/vi/CoSrrgpmrg0/maxresdefault.jpg")])
+                    url="https://ppt.cc/fJa70x@.png")])
             item_list = []
             for ans in util.get_multiple_choice_answers(
                     item, item_attr, data.ADDITION_LIST):
@@ -281,7 +281,7 @@ class MultiplicationHandler(AbstractRequestHandler):
             title = "Question #{}".format(str(attr["counter"]))
             background_img = Image(
                 sources=[ImageInstance(
-                    url="https://i.ytimg.com/vi/PTClhv8WlDI/maxresdefault.jpg")])
+                    url="https://ppt.cc/fgi3Ax@.png")])
             item_list = []
             for ans in util.get_multiple_choice_answers(
                     item, item_attr, data.ADDITION_LIST):
@@ -327,7 +327,7 @@ class DivisionHandler(AbstractRequestHandler):
             title = "Question #{}".format(str(attr["counter"]))
             background_img = Image(
                 sources=[ImageInstance(
-                    url="https://yr3ghajnsielem.files.wordpress.com/2010/06/division.png")])
+                    url="https://ppt.cc/fzyVix@.png")])
             item_list = []
             for ans in util.get_multiple_choice_answers(
                     item, item_attr, data.ADDITION_LIST):
