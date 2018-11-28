@@ -181,8 +181,31 @@ class AdditionHandler(AbstractRequestHandler):
         response_builder = handler_input.response_builder
         response_builder.speak(data.START_QUIZ_MESSAGE.format(str(attr["type"])) + question)
         response_builder.ask(question)
+        
+        
+        if util.supports_display(handler_input):
+            item = attr["quiz_item"]
+            item_attr = attr["quiz_attr"]
+            title = "Question #{}".format(str(attr["counter"]))
+            background_img = Image(
+                sources=[ImageInstance(
+                    url="https://i.ytimg.com/vi/k5wC5krH8xo/maxresdefault.jpg")])
+            item_list = []
+            for ans in util.get_multiple_choice_answers(
+                    item, item_attr, data.ADDITION_LIST):
+                item_list.append(ListItem(
+                    token=ans,
+                    text_content=get_plain_text_content(primary_text=ans)))
 
-
+            response_builder.add_directive(
+                RenderTemplateDirective(
+                    ListTemplate1(
+                        token="Question",
+                        back_button=BackButtonBehavior.HIDDEN,
+                        background_image=background_img,
+                        title=title,
+                        list_items=item_list)))
+        
         return response_builder.response
 
 class SubtractionHandler(AbstractRequestHandler):
@@ -205,6 +228,29 @@ class SubtractionHandler(AbstractRequestHandler):
         response_builder = handler_input.response_builder
         response_builder.speak(data.START_QUIZ_MESSAGE.format(str(attr["type"])) + question)
         response_builder.ask(question)
+        
+        if util.supports_display(handler_input):
+            item = attr["quiz_item"]
+            item_attr = attr["quiz_attr"]
+            title = "Question #{}".format(str(attr["counter"]))
+            background_img = Image(
+                sources=[ImageInstance(
+                    url="https://i.ytimg.com/vi/CoSrrgpmrg0/maxresdefault.jpg")])
+            item_list = []
+            for ans in util.get_multiple_choice_answers(
+                    item, item_attr, data.ADDITION_LIST):
+                item_list.append(ListItem(
+                    token=ans,
+                    text_content=get_plain_text_content(primary_text=ans)))
+
+            response_builder.add_directive(
+                RenderTemplateDirective(
+                    ListTemplate1(
+                        token="Question",
+                        back_button=BackButtonBehavior.HIDDEN,
+                        background_image=background_img,
+                        title=title,
+                        list_items=item_list)))
 
         return response_builder.response
 
@@ -228,6 +274,29 @@ class MultiplicationHandler(AbstractRequestHandler):
         response_builder = handler_input.response_builder
         response_builder.speak(data.START_QUIZ_MESSAGE.format(str(attr["type"])) + question)
         response_builder.ask(question)
+        
+        if util.supports_display(handler_input):
+            item = attr["quiz_item"]
+            item_attr = attr["quiz_attr"]
+            title = "Question #{}".format(str(attr["counter"]))
+            background_img = Image(
+                sources=[ImageInstance(
+                    url="https://i.ytimg.com/vi/PTClhv8WlDI/maxresdefault.jpg")])
+            item_list = []
+            for ans in util.get_multiple_choice_answers(
+                    item, item_attr, data.ADDITION_LIST):
+                item_list.append(ListItem(
+                    token=ans,
+                    text_content=get_plain_text_content(primary_text=ans)))
+
+            response_builder.add_directive(
+                RenderTemplateDirective(
+                    ListTemplate1(
+                        token="Question",
+                        back_button=BackButtonBehavior.HIDDEN,
+                        background_image=background_img,
+                        title=title,
+                        list_items=item_list)))
 
         return response_builder.response
 
@@ -251,6 +320,29 @@ class DivisionHandler(AbstractRequestHandler):
         response_builder = handler_input.response_builder
         response_builder.speak(data.START_QUIZ_MESSAGE.format(str(attr["type"])) + question)
         response_builder.ask(question)
+        
+        if util.supports_display(handler_input):
+            item = attr["quiz_item"]
+            item_attr = attr["quiz_attr"]
+            title = "Question #{}".format(str(attr["counter"]))
+            background_img = Image(
+                sources=[ImageInstance(
+                    url="https://yr3ghajnsielem.files.wordpress.com/2010/06/division.png")])
+            item_list = []
+            for ans in util.get_multiple_choice_answers(
+                    item, item_attr, data.ADDITION_LIST):
+                item_list.append(ListItem(
+                    token=ans,
+                    text_content=get_plain_text_content(primary_text=ans)))
+
+            response_builder.add_directive(
+                RenderTemplateDirective(
+                    ListTemplate1(
+                        token="Question",
+                        back_button=BackButtonBehavior.HIDDEN,
+                        background_image=background_img,
+                        title=title,
+                        list_items=item_list)))
 
         return response_builder.response
 
