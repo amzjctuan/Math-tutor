@@ -21,6 +21,8 @@ from ask_sdk_core.response_helper import (
 from ask_sdk_model.interfaces.display import (
     ImageInstance, Image, RenderTemplateDirective, ListTemplate1,
     BackButtonBehavior, ListItem, BodyTemplate2, BodyTemplate1)
+    
+from ask_sdk_model.interfaces.videoapp import (LaunchDirective, VideoItem, Metadata, VideoAppInterface)
 from ask_sdk_model import ui, Response
 
 from alexa import data, util
@@ -176,12 +178,20 @@ class AdditionHandler(AbstractRequestHandler):
         attr["counter"] = 0
         attr["quiz_score"] = 0
         attr["type"] = "addition"
+        
+        
 
         question = util.ask_addition(handler_input)
         response_builder = handler_input.response_builder
         response_builder.speak(data.START_QUIZ_MESSAGE.format(str(attr["type"])) + question)
         response_builder.ask(question)
-        
+       
+       
+        # if util.supports_video(handler_input):            
+        response_builder.add_directive(
+            LaunchDirective(VideoItem(
+                source="https://ppt.cc/foWcGx")))
+                
         
         if util.supports_display(handler_input):
             item = attr["quiz_item"]
@@ -196,7 +206,8 @@ class AdditionHandler(AbstractRequestHandler):
                 item_list.append(ListItem(
                     token=ans,
                     text_content=get_plain_text_content(primary_text=ans)))
-
+           
+           
             response_builder.add_directive(
                 RenderTemplateDirective(
                     ListTemplate1(
@@ -205,6 +216,7 @@ class AdditionHandler(AbstractRequestHandler):
                         background_image=background_img,
                         title=title,
                         list_items=item_list)))
+                        
         
         return response_builder.response
 
@@ -238,7 +250,7 @@ class SubtractionHandler(AbstractRequestHandler):
                     url="https://ppt.cc/fJa70x@.png")])
             item_list = []
             for ans in util.get_multiple_choice_answers(
-                    item, item_attr, data.ADDITION_LIST):
+                    item, item_attr, data.SUBTRACTION_LIST):
                 item_list.append(ListItem(
                     token=ans,
                     text_content=get_plain_text_content(primary_text=ans)))
@@ -484,15 +496,33 @@ class QuizAnswerHandler(AbstractRequestHandler):
                         )))
 
             if util.supports_display(handler_input):
+                if(attr.get("type")=="subtraction"):
+                     background_img = Image(
+                         sources=[ImageInstance(
+                        url="https://ppt.cc/fJa70x@.png")])
+                elif(attr.get("type")=="multiplication"):
+                    background_img = Image(
+                         sources=[ImageInstance(
+                        url="https://ppt.cc/fgi3Ax@.png")])
+                elif(attr.get("type")=="division"):
+                    background_img = Image(
+                         sources=[ImageInstance(
+                        url="https://ppt.cc/fzyVix@.png")])
+                elif(attr.get("type")=="addition"):
+                     background_img = Image(
+                         sources=[ImageInstance(
+                        url="https://ppt.cc/fd2Vix@.png")])
+                    
+               
+                    
+                    
                 title = "Question #{}".format(str(attr["counter"]))
-                background_img = Image(
-                    sources=[ImageInstance(
-                        util.get_image(
-                            ht=1024, wd=600,
-                            label=attr["quiz_item"]["abbreviation"]))])
+                # background_img = Image(
+                #      sources=[ImageInstance(
+                #     url="https://ppt.cc/fd2Vix@.png")])
                 item_list = []
                 for ans in util.get_multiple_choice_answers(
-                        item, item_attr, data.STATES_LIST):
+                        item, item_attr, data.SUBTRACTION_LIST):
                     item_list.append(ListItem(
                         token=ans,
                         text_content=get_plain_text_content(primary_text=ans)))
