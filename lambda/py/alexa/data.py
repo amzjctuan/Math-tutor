@@ -86,7 +86,7 @@ STATES_LIST = [
 ADDITION_LIST = [
     {
         'abbreviation': '2', 'answer': '2',
-        'state': 'one_plus_one', 'capital': '2',
+        'state': '1_+_1', 'capital': '2',
         'statehood_year': '2'
     },   
     {
@@ -218,14 +218,26 @@ DIVISION_LIST = [
 
 SKILL_TITLE = "Math Tutor Quiz Game"
 
-WELCOME_MESSAGE = ( "Welcome to the Math Tutor Quiz Game!  "
-                    "You can start a math quiz game by selecting from four topics "
-                    "including addition, subtraction, multiplication and division "
+# WELCOME_MESSAGE = ( "Welcome to the Math Quiz Game!  "
+#                     "Which topic would you like to choose? "
+#                     "Addition, subtraction, multiplication or division? "
+#                   )
+WELCOME_MESSAGE = ( "Welcome to the Math Quiz Game!  "
+                    "What is your name? "
                   )
+                  
+MAX_QUESTIONS = 2
 
-START_QUIZ_MESSAGE = ("OK. I will ask you 5 {} math questions ")
+START_QUIZ_MESSAGE = ("This is {}. I will ask you 5 questions ")
+
 
 START_TOPIC_MESSAGE = ("There are four topics of math questions you can choose from: addition, multiplication, subtraction and division ")
+
+HELLO_MESSAGE = ("Hi! {}. Are you ready for the quiz? " 
+                " There are four topics  you can choose: addition, multiplication, subtraction and division ")
+
+NEXT_LEVEL_MESSAGE = ("Well done! You have finished all the questions.  "
+                      "Do you wanna play next level or exit?")
 
 EXIT_SKILL_MESSAGE = ("Thank you for playing the Math Tutor Quiz Game!  "
                       "Let's play again soon!")
@@ -256,7 +268,7 @@ IMG_PATH = (
 
 USE_CARDS_FLAG = True
 
-MAX_QUESTIONS = 10
+
 
 BAD_ANSWER = (
     "I'm sorry. {} is not something I know very much about in this skill.")
