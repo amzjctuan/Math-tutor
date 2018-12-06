@@ -20,12 +20,13 @@ from ask_sdk_core.response_helper import (
 
 from ask_sdk_model.interfaces.display import (
     ImageInstance, Image, RenderTemplateDirective, ListTemplate1,
-    BackButtonBehavior, ListItem, BodyTemplate2, BodyTemplate1)
+    BackButtonBehavior, ListItem, BodyTemplate3, BodyTemplate2, BodyTemplate1)
     
 from ask_sdk_model.interfaces.videoapp import (LaunchDirective, VideoItem, Metadata, VideoAppInterface)
 from ask_sdk_model import ui, Response
 
 from alexa import data, util
+import six
 
 
 # Skill Builder object
@@ -162,11 +163,35 @@ class QuizHandler(AbstractRequestHandler):
 
         return response_builder.response
 
+class HelloHandler(AbstractRequestHandler):
+  
+    def can_handle(self, handler_input):
+        # type: (HandlerInput) -> bool
+        return (is_intent_name("HelloIntent")(handler_input) or
+                is_intent_name("AMAZON.StartOverIntent")(handler_input))
+
+    def handle(self, handler_input):
+        # type: (HandlerInput) -> Response
+
+        logger.info("In HelloHandler")
+        slots=handler_input.request_envelope.request.intent.slots
+       
+        # response_builder.speak(data.HELLO_MESSAGE.format(slot.value))
+        # handler_input.response_builder.speak(data.HELLO_MESSAGE.format(str(handler_input)))
+    
+        
+        handler_input.response_builder.speak(data.HELLO_MESSAGE.format(str(slots['name'].value)))
+        
+      
+        return handler_input.response_builder.response
+       
+
 class AdditionHandler(AbstractRequestHandler):
   
     def can_handle(self, handler_input):
         # type: (HandlerInput) -> bool
         return (is_intent_name("AdditionIntent")(handler_input) or
+                is_intent_name("AdditionNextLevelIntent")(handler_input) or
                 is_intent_name("AMAZON.StartOverIntent")(handler_input))
 
     def handle(self, handler_input):
@@ -179,18 +204,24 @@ class AdditionHandler(AbstractRequestHandler):
         attr["quiz_score"] = 0
         attr["type"] = "addition"
         
-        
-
-        question = util.ask_addition(handler_input)
-        response_builder = handler_input.response_builder
-        response_builder.speak(data.START_QUIZ_MESSAGE.format(str(attr["type"])) + question)
-        response_builder.ask(question)
+        if is_intent_name("AdditionIntent")(handler_input):
+            question = util.ask_addition(handler_input)
+            level = "addition level 1"
+        else:
+            question = util.ask_addition_levelUp(handler_input)
+            level = "addition level 2"
+           
        
+        response_builder = handler_input.response_builder
+        response_builder.speak(data.START_QUIZ_MESSAGE.format(str(level)) + question)
+        response_builder.ask(question)
+        
+        
        
         # if util.supports_video(handler_input):            
-        response_builder.add_directive(
-            LaunchDirective(VideoItem(
-                source="https://ppt.cc/foWcGx")))
+        # response_builder.add_directive(
+        #     LaunchDirective(VideoItem(
+        #         source="https://ppt.cc/foWcGx")))
                 
         
         if util.supports_display(handler_input):
@@ -207,7 +238,6 @@ class AdditionHandler(AbstractRequestHandler):
                     token=ans,
                     text_content=get_plain_text_content(primary_text=ans)))
            
-           
             response_builder.add_directive(
                 RenderTemplateDirective(
                     ListTemplate1(
@@ -219,6 +249,7 @@ class AdditionHandler(AbstractRequestHandler):
                         
         
         return response_builder.response
+
 
 class SubtractionHandler(AbstractRequestHandler):
     
@@ -248,6 +279,8 @@ class SubtractionHandler(AbstractRequestHandler):
             background_img = Image(
                 sources=[ImageInstance(
                     url="https://ppt.cc/fJa70x@.png")])
+            
+                   
             item_list = []
             for ans in util.get_multiple_choice_answers(
                     item, item_attr, data.SUBTRACTION_LIST):
@@ -255,14 +288,21 @@ class SubtractionHandler(AbstractRequestHandler):
                     token=ans,
                     text_content=get_plain_text_content(primary_text=ans)))
 
+            # response_builder.add_directive(
+            #     RenderTemplateDirective(
+            #         ListTemplate1(
+            #             token="Question",
+            #             back_button=BackButtonBehavior.HIDDEN,
+            #             background_image=background_img,
+            #             title=title,
+            #             list_items=item_list)))
+            
             response_builder.add_directive(
                 RenderTemplateDirective(
-                    ListTemplate1(
-                        token="Question",
-                        back_button=BackButtonBehavior.HIDDEN,
-                        background_image=background_img,
+                    BodyTemplate3(
                         title=title,
-                        list_items=item_list)))
+                        token="Question",
+                        background_image=background_img)))
 
         return response_builder.response
 
@@ -453,6 +493,7 @@ class QuizAnswerHandler(AbstractRequestHandler):
             speech = util.get_speechcon(correct_answer=True)
             attr["quiz_score"] += 1
             handler_input.attributes_manager.session_attributes = attr
+            
         else:
             speech = util.get_speechcon(correct_answer=False)
 
@@ -513,9 +554,6 @@ class QuizAnswerHandler(AbstractRequestHandler):
                          sources=[ImageInstance(
                         url="https://ppt.cc/fd2Vix@.png")])
                     
-               
-                    
-                    
                 title = "Question #{}".format(str(attr["counter"]))
                 # background_img = Image(
                 #      sources=[ImageInstance(
@@ -539,9 +577,10 @@ class QuizAnswerHandler(AbstractRequestHandler):
         else:
             # Finished all questions.
             speech += util.get_final_score(attr["quiz_score"], attr["counter"])
-            speech += data.EXIT_SKILL_MESSAGE
+            # speech += data.EXIT_SKILL_MESSAGE
+            speech += data.NEXT_LEVEL_MESSAGE
 
-            response_builder.set_should_end_session(True)
+            # response_builder.set_should_end_session(True)
 
             if data.USE_CARDS_FLAG:
                 response_builder.set_card(
@@ -551,7 +590,7 @@ class QuizAnswerHandler(AbstractRequestHandler):
                             attr["quiz_score"], attr["counter"]) +
                               data.EXIT_SKILL_MESSAGE)
                     ))
-
+            
             if util.supports_display(handler_input):
                 title = "Thank you for playing"
                 primary_text = get_rich_text_content(
@@ -685,6 +724,7 @@ class ResponseLogger(AbstractResponseInterceptor):
 # Add all request handlers to the skill.
 sb.add_request_handler(LaunchRequestHandler())
 sb.add_request_handler(QuizHandler())
+sb.add_request_handler(HelloHandler())
 sb.add_request_handler(AdditionHandler())
 sb.add_request_handler(SubtractionHandler())
 sb.add_request_handler(MultiplicationHandler())
