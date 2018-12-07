@@ -4,10 +4,13 @@
 
 import random
 import six
+import requests 
+import json
 from ask_sdk_core.handler_input import HandlerInput
 from ask_sdk_core.utils import is_request_type
 
-from . import data
+
+from . import data, data_1
 
 
 def get_random_state(states_list):
@@ -49,6 +52,20 @@ def supports_display(handler_input):
     except:
         return False
 
+def supports_video(handler_input):
+    # type: (HandlerInput) -> bool
+    """Check if video is supported by the skill."""
+    try:
+        if hasattr(
+                handler_input.request_envelope.context.system.device.
+                        supported_interfaces, 'video_app'):
+            return (
+                    handler_input.request_envelope.context.system.device.
+                    supported_interfaces.video_app is not None)
+    except:
+        return False
+
+
 
 def get_bad_answer(item):
     """Return response text for incorrect answer."""
@@ -62,8 +79,17 @@ def get_current_score(score, counter):
 
 def get_final_score(score, counter):
     """Return the response text for final quiz score of the user."""
-    return data.SCORE.format("final", score, counter)
+    return data.SCORE.format("current", score, counter)
+    
+def get_joke():
+    PARAMS = {} 
+    URL = "http://api.icndb.com/jokes/random"
+    r = requests.get(url = URL, params = PARAMS) 
+    #extracting data in json format 
+    data = r.json() 
 
+    return str(data['value']['joke'])
+  
 
 def get_card_title(item):
     """Return state name as card title."""
@@ -154,6 +180,22 @@ def ask_addition(handler_input):
     # (HandlerInput) -> None
     """Get a random state and property, return question about it."""
     random_state = get_random_state(data.ADDITION_LIST)
+    random_property = get_random_state_property()
+
+    attr = handler_input.attributes_manager.session_attributes
+
+    attr["quiz_item"] = random_state
+    attr["quiz_attr"] = random_property
+    attr["counter"] += 1
+
+    handler_input.attributes_manager.session_attributes = attr
+
+    return get_question(attr["counter"], random_property, random_state)
+
+def ask_addition_levelUp(handler_input):
+    # (HandlerInput) -> None
+    """Get a random state and property, return question about it."""
+    random_state = get_random_state(data_1.ADDITION_LIST)
     random_property = get_random_state_property()
 
     attr = handler_input.attributes_manager.session_attributes
