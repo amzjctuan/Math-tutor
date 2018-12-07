@@ -497,8 +497,9 @@ class QuizAnswerHandler(AbstractRequestHandler):
             
         else:
             speech = util.get_speechcon(correct_answer=False)
+            speech += util.get_answer(item_attr, item)
 
-        speech += util.get_answer(item_attr, item)
+        
 
         if attr['counter'] < data.MAX_ALL_QUESTIONS:
             # Ask another question
@@ -591,13 +592,13 @@ class QuizAnswerHandler(AbstractRequestHandler):
         else:
             # Finished all questions.
             speech += util.get_final_score(attr["quiz_score"], attr["counter"])
-            # speech += data.EXIT_SKILL_MESSAGE
+            
             if attr["quiz_score"] >= data.MAX_QUESTIONS:
                 speech += data.JOKE_MESSAGE
                 speech += util.get_joke()
+                
+            speech += data.EXIT_SKILL_MESSAGE
             
-            speech += data.NEXT_LEVEL_MESSAGE
-
             # response_builder.set_should_end_session(True)
 
             if data.USE_CARDS_FLAG:
