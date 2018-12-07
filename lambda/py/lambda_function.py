@@ -209,8 +209,6 @@ class AdditionHandler(AbstractRequestHandler):
             question = util.ask_addition(handler_input)
             level = "addition level 1"
         else:
-            attr["counter"] += 1
-            attr["quiz_score"] += 1
             question = util.ask_addition_levelUp(handler_input)
             level = "addition level 2"
            
@@ -502,28 +500,50 @@ class QuizAnswerHandler(AbstractRequestHandler):
 
         speech += util.get_answer(item_attr, item)
 
-        if attr['counter'] < data.MAX_QUESTIONS:
+        if attr['counter'] < data.MAX_ALL_QUESTIONS:
             # Ask another question
             speech += util.get_current_score(
                 attr["quiz_score"], attr["counter"])
             
-            if(attr.get("type")=="addition"):
-                question = util.ask_addition(handler_input)
-            
-            elif(attr.get("type")=="subtraction"):
-                question = util.ask_subtraction(handler_input)
-
-            elif(attr.get("type")=="multiplication"):
-                question = util.ask_multiplication(handler_input)
-
-            elif(attr.get("type")=="division"):
-                question = util.ask_division(handler_input)
-
+            if attr['counter'] < data.MAX_QUESTIONS:
+                if(attr.get("type")=="addition"):
+                    question = util.ask_addition(handler_input)
+                
+                elif(attr.get("type")=="subtraction"):
+                    question = util.ask_subtraction(handler_input)
+    
+                elif(attr.get("type")=="multiplication"):
+                    question = util.ask_multiplication(handler_input)
+    
+                elif(attr.get("type")=="division"):
+                    question = util.ask_division(handler_input)
+    
+                else:
+                    question = util.ask_question(handler_input)
+                speech += question
+                reprompt = question
+             
+            elif attr['counter'] == data.MAX_QUESTIONS:
+                  speech += data.NEXT_LEVEL_MESSAGE
+                  return response_builder.speak(speech).response
             else:
-                question = util.ask_question(handler_input)
+                if(attr.get("type")=="addition"):
+                    question = util.ask_addition_levelUp(handler_input)
+                
+                elif(attr.get("type")=="subtraction"):
+                    question = util.ask_subtraction(handler_input)
+    
+                elif(attr.get("type")=="multiplication"):
+                    question = util.ask_multiplication(handler_input)
+    
+                elif(attr.get("type")=="division"):
+                    question = util.ask_division(handler_input)
+    
+                else:
+                    question = util.ask_question(handler_input)
 
-            speech += question
-            reprompt = question
+                speech += question
+                reprompt = question
 
             # Update item and item_attr for next question
             item = attr["quiz_item"]
