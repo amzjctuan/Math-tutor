@@ -200,14 +200,17 @@ class AdditionHandler(AbstractRequestHandler):
         logger.info("In AdditionHandler")
         attr = handler_input.attributes_manager.session_attributes
         attr["state"] = "QUIZ"
-        attr["counter"] = 0
-        attr["quiz_score"] = 0
+        
         attr["type"] = "addition"
         
         if is_intent_name("AdditionIntent")(handler_input):
+            attr["counter"] = 0
+            attr["quiz_score"] = 0
             question = util.ask_addition(handler_input)
             level = "addition level 1"
         else:
+            attr["counter"] += 1
+            attr["quiz_score"] += 1
             question = util.ask_addition_levelUp(handler_input)
             level = "addition level 2"
            
@@ -526,16 +529,7 @@ class QuizAnswerHandler(AbstractRequestHandler):
             item = attr["quiz_item"]
             item_attr = attr["quiz_attr"]
 
-            if data.USE_CARDS_FLAG:
-                response_builder.set_card(
-                    ui.StandardCard(
-                        title="Question #{}".format(str(attr["counter"])),
-                        text=question,
-                        image=ui.Image(
-                            small_image_url=util.get_small_image(item),
-                            large_image_url=util.get_large_image(item)
-                        )))
-
+           
             if util.supports_display(handler_input):
                 if(attr.get("type")=="subtraction"):
                      background_img = Image(
@@ -578,6 +572,10 @@ class QuizAnswerHandler(AbstractRequestHandler):
             # Finished all questions.
             speech += util.get_final_score(attr["quiz_score"], attr["counter"])
             # speech += data.EXIT_SKILL_MESSAGE
+            if attr["quiz_score"] >= data.MAX_QUESTIONS:
+                speech += data.JOKE_MESSAGE
+                speech += util.get_joke()
+            
             speech += data.NEXT_LEVEL_MESSAGE
 
             # response_builder.set_should_end_session(True)
@@ -591,19 +589,22 @@ class QuizAnswerHandler(AbstractRequestHandler):
                               data.EXIT_SKILL_MESSAGE)
                     ))
             
+            
+                
+            
             if util.supports_display(handler_input):
-                title = "Thank you for playing"
-                primary_text = get_rich_text_content(
-                    primary_text=util.get_final_score(
-                        attr["quiz_score"], attr["counter"]))
-
-                response_builder.add_directive(
-                    RenderTemplateDirective(
-                        BodyTemplate1(
-                            back_button=BackButtonBehavior.HIDDEN,
-                            title=title,
-                            text_content=primary_text
-                        )))
+                    title = "Thank you for playing"
+                    primary_text = get_rich_text_content(
+                        primary_text=util.get_final_score(
+                            attr["quiz_score"], attr["counter"]))
+    
+                    response_builder.add_directive(
+                        RenderTemplateDirective(
+                            BodyTemplate1(
+                                back_button=BackButtonBehavior.HIDDEN,
+                                title=title,
+                                text_content=primary_text
+                            )))
 
             return response_builder.speak(speech).response
 
