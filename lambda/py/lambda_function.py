@@ -25,7 +25,7 @@ from ask_sdk_model.interfaces.display import (
 from ask_sdk_model.interfaces.videoapp import (LaunchDirective, VideoItem, Metadata, VideoAppInterface)
 from ask_sdk_model import ui, Response
 
-from alexa import data, util
+from alexa import data, util, data_1, kahn
 import six
 
 
@@ -46,9 +46,26 @@ class LaunchRequestHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
         logger.info("In LaunchRequestHandler")
-        handler_input.response_builder.speak(data.WELCOME_MESSAGE).ask(
-            data.HELP_MESSAGE)
-        return handler_input.response_builder.response
+        # handler_input.response_builder.speak(data.WELCOME_MESSAGE).ask(
+            # data.HELP_MESSAGE)
+        
+        response_builder = handler_input.response_builder
+        background_img = Image(
+                sources=[ImageInstance(
+                    url="https://ppt.cc/fTgKZx@.png")])
+        
+        response_builder.add_directive(
+                RenderTemplateDirective(
+                    BodyTemplate3(
+                        title="",
+                        token="Question",
+                        background_image=background_img)))
+        
+        response_builder.speak(data.WELCOME_MESSAGE)
+            
+            
+        # return handler_input.response_builder.response, 
+        return response_builder.response
 
 
 class SessionEndedRequestHandler(AbstractRequestHandler):
@@ -187,58 +204,64 @@ class HelloHandler(AbstractRequestHandler):
        
 
 class AdditionHandler(AbstractRequestHandler):
-  
     def can_handle(self, handler_input):
         # type: (HandlerInput) -> bool
         return (is_intent_name("AdditionIntent")(handler_input) or
                 is_intent_name("AdditionNextLevelIntent")(handler_input) or
                 is_intent_name("AMAZON.StartOverIntent")(handler_input))
-
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-
         logger.info("In AdditionHandler")
         attr = handler_input.attributes_manager.session_attributes
         attr["state"] = "QUIZ"
-        
-        attr["type"] = "addition"
         
         if is_intent_name("AdditionIntent")(handler_input):
             attr["counter"] = 0
             attr["quiz_score"] = 0
             question = util.ask_addition(handler_input)
             level = "addition level 1"
+            attr["type"] = "addition"
+            
+        
         else:
             question = util.ask_addition_levelUp(handler_input)
             level = "addition level 2"
-           
-       
+            attr["type"] = "addition_1"
+            
         response_builder = handler_input.response_builder
         response_builder.speak(data.START_QUIZ_MESSAGE.format(str(level)) + question)
         response_builder.ask(question)
         
-        
-       
         # if util.supports_video(handler_input):            
         # response_builder.add_directive(
         #     LaunchDirective(VideoItem(
         #         source="https://ppt.cc/foWcGx")))
                 
-        
+        item_list = []
         if util.supports_display(handler_input):
             item = attr["quiz_item"]
             item_attr = attr["quiz_attr"]
-            title = "Question #{}".format(str(attr["counter"]))
-            background_img = Image(
-                sources=[ImageInstance(
-                    url="https://ppt.cc/fd2Vix@.png")])
-            item_list = []
-            for ans in util.get_multiple_choice_answers(
+            title = "Question #{} Khan: {}".format(str(attr["counter"]),kahn.URL_generate(str(attr["type"])))
+            # title = "Khan URL: {}".format(kahn.URL_generate(str(attr["type"])))
+            if is_intent_name("AdditionIntent")(handler_input):
+                background_img = Image(
+                    sources=[ImageInstance(
+                        url="https://ppt.cc/fxpmlx@.png")])
+                for ans in util.get_multiple_choice_answers(
                     item, item_attr, data.ADDITION_LIST):
-                item_list.append(ListItem(
+                    item_list.append(ListItem(
                     token=ans,
                     text_content=get_plain_text_content(primary_text=ans)))
-           
+            else:
+                background_img = Image(
+                    sources=[ImageInstance(
+                        url="https://ppt.cc/fklGax@.png")])
+                for ans in util.get_multiple_choice_answers(
+                    item, item_attr, data_1.ADDITION_LIST):
+                    item_list.append(ListItem(
+                    token=ans,
+                    text_content=get_plain_text_content(primary_text=ans)))
+                
             response_builder.add_directive(
                 RenderTemplateDirective(
                     ListTemplate1(
@@ -247,101 +270,127 @@ class AdditionHandler(AbstractRequestHandler):
                         background_image=background_img,
                         title=title,
                         list_items=item_list)))
-                        
-        
+                    
         return response_builder.response
-
+       
 
 class SubtractionHandler(AbstractRequestHandler):
-    
     def can_handle(self, handler_input):
         # type: (HandlerInput) -> bool
         return (is_intent_name("SubtractionIntent")(handler_input) or
+                is_intent_name("SubtractionNextLevelIntent")(handler_input) or
                 is_intent_name("AMAZON.StartOverIntent")(handler_input))
-
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
         logger.info("In SubtractionHandler")
         attr = handler_input.attributes_manager.session_attributes
         attr["state"] = "QUIZ"
-        attr["counter"] = 0
-        attr["quiz_score"] = 0
-        attr["type"] = "subtraction"
-
-        question = util.ask_subtraction(handler_input)
+        
+        if is_intent_name("SubtractionIntent")(handler_input):
+            attr["counter"] = 0
+            attr["quiz_score"] = 0
+            question = util.ask_subtraction(handler_input)
+            level = "subtraction level 1"
+            attr["type"] = "subtraction"
+        
+        else:
+            question = util.ask_subtraction_levelUp(handler_input)
+            level = "subtraction level 2"
+            attr["type"] = "subtraction_1"
+            
         response_builder = handler_input.response_builder
-        response_builder.speak(data.START_QUIZ_MESSAGE.format(str(attr["type"])) + question)
+        response_builder.speak(data.START_QUIZ_MESSAGE.format(str(level)) + question)
         response_builder.ask(question)
         
+        item_list = []
         if util.supports_display(handler_input):
             item = attr["quiz_item"]
             item_attr = attr["quiz_attr"]
-            title = "Question #{}".format(str(attr["counter"]))
-            background_img = Image(
-                sources=[ImageInstance(
-                    url="https://ppt.cc/fJa70x@.png")])
-            
-                   
-            item_list = []
-            for ans in util.get_multiple_choice_answers(
+            title = "Question #{} Khan: {}".format(str(attr["counter"]),kahn.URL_generate(str(attr["type"])))
+            # title = "Khan URL: {}".format(kahn.URL_generate(str(attr["type"])))
+            if is_intent_name("SubtractionIntent")(handler_input):
+                background_img = Image(
+                    sources=[ImageInstance(
+                        url="https://ppt.cc/fiJjqx@.png")])
+                for ans in util.get_multiple_choice_answers(
                     item, item_attr, data.SUBTRACTION_LIST):
-                item_list.append(ListItem(
+                    item_list.append(ListItem(
                     token=ans,
                     text_content=get_plain_text_content(primary_text=ans)))
-
-            # response_builder.add_directive(
-            #     RenderTemplateDirective(
-            #         ListTemplate1(
-            #             token="Question",
-            #             back_button=BackButtonBehavior.HIDDEN,
-            #             background_image=background_img,
-            #             title=title,
-            #             list_items=item_list)))
-            
+            else:
+                background_img = Image(
+                    sources=[ImageInstance(
+                        url="https://ppt.cc/fJkn9x@.jpg")])
+                for ans in util.get_multiple_choice_answers(
+                    item, item_attr, data_1.SUBTRACTION_LIST):
+                    item_list.append(ListItem(
+                    token=ans,
+                    text_content=get_plain_text_content(primary_text=ans)))
+                
             response_builder.add_directive(
                 RenderTemplateDirective(
-                    BodyTemplate3(
-                        title=title,
+                    ListTemplate1(
                         token="Question",
-                        background_image=background_img)))
-
+                        back_button=BackButtonBehavior.HIDDEN,
+                        background_image=background_img,
+                        title=title,
+                        list_items=item_list)))
+                    
         return response_builder.response
 
 class MultiplicationHandler(AbstractRequestHandler):
-    
     def can_handle(self, handler_input):
         # type: (HandlerInput) -> bool
         return (is_intent_name("MultiplicationIntent")(handler_input) or
+                is_intent_name("MultiplicationNextLevelIntent")(handler_input) or
                 is_intent_name("AMAZON.StartOverIntent")(handler_input))
-
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
         logger.info("In MultiplicationHandler")
         attr = handler_input.attributes_manager.session_attributes
         attr["state"] = "QUIZ"
-        attr["counter"] = 0
-        attr["quiz_score"] = 0
-        attr["type"] = "multiplication"
-
-        question = util.ask_multiplication(handler_input)
+        
+        if is_intent_name("MultiplicationIntent")(handler_input):
+            attr["counter"] = 0
+            attr["quiz_score"] = 0
+            question = util.ask_multiplication(handler_input)
+            level = "multiplication level 1"
+            attr["type"] = "multiplication"
+        
+        else:
+            question = util.ask_multiplication_levelUp(handler_input)
+            level = "multiplication level 2"
+            attr["type"] = "multiplication_1"
+            
         response_builder = handler_input.response_builder
-        response_builder.speak(data.START_QUIZ_MESSAGE.format(str(attr["type"])) + question)
+        response_builder.speak(data.START_QUIZ_MESSAGE.format(str(level)) + question)
         response_builder.ask(question)
         
+        item_list = []
         if util.supports_display(handler_input):
             item = attr["quiz_item"]
             item_attr = attr["quiz_attr"]
-            title = "Question #{}".format(str(attr["counter"]))
-            background_img = Image(
-                sources=[ImageInstance(
-                    url="https://ppt.cc/fgi3Ax@.png")])
-            item_list = []
-            for ans in util.get_multiple_choice_answers(
-                    item, item_attr, data.ADDITION_LIST):
-                item_list.append(ListItem(
+            title = "Question #{} Khan: {}".format(str(attr["counter"]),kahn.URL_generate(str(attr["type"])))
+            # title = "Khan URL: {}".format(kahn.URL_generate(str(attr["type"])))
+            if is_intent_name("MultiplicationIntent")(handler_input):
+                background_img = Image(
+                    sources=[ImageInstance(
+                        url="https://ppt.cc/fKb6ex@.png")])
+                for ans in util.get_multiple_choice_answers(
+                    item, item_attr, data.MULTIPLICATION_LIST):
+                    item_list.append(ListItem(
                     token=ans,
                     text_content=get_plain_text_content(primary_text=ans)))
-
+            else:
+                background_img = Image(
+                    sources=[ImageInstance(
+                        url="https://ppt.cc/fXf3Px@.jpg")])
+                for ans in util.get_multiple_choice_answers(
+                    item, item_attr, data_1.MULTIPLICATION_LIST):
+                    item_list.append(ListItem(
+                    token=ans,
+                    text_content=get_plain_text_content(primary_text=ans)))
+                
             response_builder.add_directive(
                 RenderTemplateDirective(
                     ListTemplate1(
@@ -350,44 +399,62 @@ class MultiplicationHandler(AbstractRequestHandler):
                         background_image=background_img,
                         title=title,
                         list_items=item_list)))
-
+                    
         return response_builder.response
 
 class DivisionHandler(AbstractRequestHandler):
-    
     def can_handle(self, handler_input):
         # type: (HandlerInput) -> bool
         return (is_intent_name("DivisionIntent")(handler_input) or
+                is_intent_name("DivisionNextLevelIntent")(handler_input) or
                 is_intent_name("AMAZON.StartOverIntent")(handler_input))
-
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
         logger.info("In DivisionHandler")
         attr = handler_input.attributes_manager.session_attributes
         attr["state"] = "QUIZ"
-        attr["counter"] = 0
-        attr["quiz_score"] = 0
-        attr["type"] = "division"
-
-        question = util.ask_division(handler_input)
+        
+        if is_intent_name("DivisionIntent")(handler_input):
+            attr["counter"] = 0
+            attr["quiz_score"] = 0
+            question = util.ask_division(handler_input)
+            level = "division level 1"
+            attr["type"] = "division"
+        
+        else:
+            question = util.ask_division_levelUp(handler_input)
+            level = "division level 2"
+            attr["type"] = "division_1"
+            
         response_builder = handler_input.response_builder
-        response_builder.speak(data.START_QUIZ_MESSAGE.format(str(attr["type"])) + question)
+        response_builder.speak(data.START_QUIZ_MESSAGE.format(str(level)) + question)
         response_builder.ask(question)
         
+        item_list = []
         if util.supports_display(handler_input):
             item = attr["quiz_item"]
             item_attr = attr["quiz_attr"]
-            title = "Question #{}".format(str(attr["counter"]))
-            background_img = Image(
-                sources=[ImageInstance(
-                    url="https://ppt.cc/fzyVix@.png")])
-            item_list = []
-            for ans in util.get_multiple_choice_answers(
-                    item, item_attr, data.ADDITION_LIST):
-                item_list.append(ListItem(
+            title = "Question #{} Khan: {}".format(str(attr["counter"]),kahn.URL_generate(str(attr["type"])))
+            # title = "Khan URL: {}".format(kahn.URL_generate(str(attr["type"])))
+            if is_intent_name("DivisionIntent")(handler_input):
+                background_img = Image(
+                    sources=[ImageInstance(
+                        url="https://ppt.cc/fDXHdx@.png")])
+                for ans in util.get_multiple_choice_answers(
+                    item, item_attr, data.DIVISION_LIST):
+                    item_list.append(ListItem(
                     token=ans,
                     text_content=get_plain_text_content(primary_text=ans)))
-
+            else:
+                background_img = Image(
+                    sources=[ImageInstance(
+                        url="https://ppt.cc/fqRPvx@.png")])
+                for ans in util.get_multiple_choice_answers(
+                    item, item_attr, data_1.DIVISION_LIST):
+                    item_list.append(ListItem(
+                    token=ans,
+                    text_content=get_plain_text_content(primary_text=ans)))
+                
             response_builder.add_directive(
                 RenderTemplateDirective(
                     ListTemplate1(
@@ -396,10 +463,8 @@ class DivisionHandler(AbstractRequestHandler):
                         background_image=background_img,
                         title=title,
                         list_items=item_list)))
-
+                    
         return response_builder.response
-
-
 
 
 class DefinitionHandler(AbstractRequestHandler):
@@ -528,17 +593,17 @@ class QuizAnswerHandler(AbstractRequestHandler):
                   speech += data.NEXT_LEVEL_MESSAGE
                   return response_builder.speak(speech).response
             else:
-                if(attr.get("type")=="addition"):
+                if(attr.get("type")=="addition_1"):
                     question = util.ask_addition_levelUp(handler_input)
                 
-                elif(attr.get("type")=="subtraction"):
-                    question = util.ask_subtraction(handler_input)
+                elif(attr.get("type")=="subtraction_1"):
+                    question = util.ask_subtraction_levelUp(handler_input)
     
-                elif(attr.get("type")=="multiplication"):
-                    question = util.ask_multiplication(handler_input)
+                elif(attr.get("type")=="multiplication_1"):
+                    question = util.ask_multiplication_levelUp(handler_input)
     
-                elif(attr.get("type")=="division"):
-                    question = util.ask_division(handler_input)
+                elif(attr.get("type")=="division_1"):
+                    question = util.ask_division_levelUp(handler_input)
     
                 else:
                     question = util.ask_question(handler_input)
@@ -550,36 +615,82 @@ class QuizAnswerHandler(AbstractRequestHandler):
             item = attr["quiz_item"]
             item_attr = attr["quiz_attr"]
 
-           
+            item_list = []
             if util.supports_display(handler_input):
                 if(attr.get("type")=="subtraction"):
-                     background_img = Image(
-                         sources=[ImageInstance(
-                        url="https://ppt.cc/fJa70x@.png")])
+                        background_img = Image(
+                             sources=[ImageInstance(
+                            url="https://ppt.cc/fiJjqx@.png")])
+                        for ans in util.get_multiple_choice_answers(
+                                        item, item_attr, data.SUBTRACTION_LIST):
+                                    item_list.append(ListItem(
+                                    token=ans,
+                                    text_content=get_plain_text_content(primary_text=ans)))
+                elif(attr.get("type")=="subtraction_1"):
+                        background_img = Image(
+                             sources=[ImageInstance(
+                            url="https://ppt.cc/fJkn9x@.jpg")])
+                        for ans in util.get_multiple_choice_answers(
+                                    item, item_attr, data_1.SUBTRACTION_LIST):
+                                item_list.append(ListItem(
+                                token=ans,
+                                text_content=get_plain_text_content(primary_text=ans)))
                 elif(attr.get("type")=="multiplication"):
-                    background_img = Image(
-                         sources=[ImageInstance(
-                        url="https://ppt.cc/fgi3Ax@.png")])
+                        background_img = Image(
+                             sources=[ImageInstance(
+                            url="https://ppt.cc/fKb6ex@.png")])
+                        for ans in util.get_multiple_choice_answers(
+                                    item, item_attr, data.MULTIPLICATION_LIST):
+                                item_list.append(ListItem(
+                                token=ans,
+                                text_content=get_plain_text_content(primary_text=ans)))
+                elif(attr.get("type")=="multiplication_1"):
+                        background_img = Image(
+                             sources=[ImageInstance(
+                            url="https://ppt.cc/fXf3Px@.jpg")])
+                        for ans in util.get_multiple_choice_answers(
+                                item, item_attr, data_1.MULTIPLICATION_LIST):
+                            item_list.append(ListItem(
+                            token=ans,
+                            text_content=get_plain_text_content(primary_text=ans)))
                 elif(attr.get("type")=="division"):
-                    background_img = Image(
-                         sources=[ImageInstance(
-                        url="https://ppt.cc/fzyVix@.png")])
+                        background_img = Image(
+                             sources=[ImageInstance(
+                            url="https://ppt.cc/fDXHdx@.png")])
+                        for ans in util.get_multiple_choice_answers(
+                                item, item_attr, data.DIVISION_LIST):
+                            item_list.append(ListItem(
+                            token=ans,
+                            text_content=get_plain_text_content(primary_text=ans)))
+                elif(attr.get("type")=="division_1"):
+                        background_img = Image(
+                             sources=[ImageInstance(
+                            url="https://ppt.cc/fqRPvx@.png")])
+                        for ans in util.get_multiple_choice_answers(
+                                item, item_attr, data_1.DIVISION_LIST):
+                            item_list.append(ListItem(
+                            token=ans,
+                            text_content=get_plain_text_content(primary_text=ans)))
                 elif(attr.get("type")=="addition"):
-                     background_img = Image(
-                         sources=[ImageInstance(
-                        url="https://ppt.cc/fd2Vix@.png")])
-                    
+                        background_img = Image(
+                            sources=[ImageInstance(
+                                url="https://ppt.cc/fxpmlx@.png")])
+                        for ans in util.get_multiple_choice_answers(
+                                item, item_attr, data.ADDITION_LIST):
+                            item_list.append(ListItem(
+                            token=ans,
+                            text_content=get_plain_text_content(primary_text=ans)))
+                elif(attr.get("type")=="addition_1"):
+                        background_img = Image(
+                            sources=[ImageInstance(
+                                url="https://ppt.cc/fklGax@.png")])
+                        for ans in util.get_multiple_choice_answers(
+                                item, item_attr, data_1.ADDITION_LIST):
+                            item_list.append(ListItem(
+                            token=ans,
+                            text_content=get_plain_text_content(primary_text=ans)))
+                   
                 title = "Question #{}".format(str(attr["counter"]))
-                # background_img = Image(
-                #      sources=[ImageInstance(
-                #     url="https://ppt.cc/fd2Vix@.png")])
-                item_list = []
-                for ans in util.get_multiple_choice_answers(
-                        item, item_attr, data.SUBTRACTION_LIST):
-                    item_list.append(ListItem(
-                        token=ans,
-                        text_content=get_plain_text_content(primary_text=ans)))
-
                 response_builder.add_directive(
                     RenderTemplateDirective(
                         ListTemplate1(
@@ -596,36 +707,38 @@ class QuizAnswerHandler(AbstractRequestHandler):
             if attr["quiz_score"] >= data.MAX_QUESTIONS:
                 speech += data.JOKE_MESSAGE
                 speech += util.get_joke()
-                
+            else:
+                speech += data.MATH_MESSAGE
+                speech += util.get_math()
+            
             speech += data.EXIT_SKILL_MESSAGE
             
             # response_builder.set_should_end_session(True)
 
-            if data.USE_CARDS_FLAG:
-                response_builder.set_card(
-                    ui.StandardCard(
-                        title="Final Score".format(str(attr["counter"])),
-                        text=(util.get_final_score(
-                            attr["quiz_score"], attr["counter"]) +
-                              data.EXIT_SKILL_MESSAGE)
-                    ))
-            
-            
-                
-            
             if util.supports_display(handler_input):
                     title = "Thank you for playing"
                     primary_text = get_rich_text_content(
                         primary_text=util.get_final_score(
                             attr["quiz_score"], attr["counter"]))
     
+                    # response_builder.add_directive(
+                    #     RenderTemplateDirective(
+                    #         BodyTemplate1(
+                    #             back_button=BackButtonBehavior.HIDDEN,
+                    #             title=title,
+                    #             text_content=primary_text
+                    #         )))
+                    
+                    background_img = Image(
+                            sources=[ImageInstance(
+                                url="https://ppt.cc/fu2AQx@.png")])
+                   
                     response_builder.add_directive(
                         RenderTemplateDirective(
-                            BodyTemplate1(
-                                back_button=BackButtonBehavior.HIDDEN,
-                                title=title,
-                                text_content=primary_text
-                            )))
+                            BodyTemplate3(
+                                title="",
+                                token="Question",
+                                background_image=background_img)))
 
             return response_builder.speak(speech).response
 
