@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import random
+
 
 STATES_LIST = [
     {
@@ -91,27 +93,27 @@ ADDITION_LIST = [
     },   
     {
         'abbreviation': '4', 'answer': '4',
-        'state': 'two_plus_two', 'capital': '4',
+        'state': '2_+_2', 'capital': '4',
         'statehood_year': '4'
     },
     {
         'abbreviation': '2', 'answer': '6',
-        'state': 'three_plus_three', 'capital': '2',
+        'state': '3_+_3', 'capital': '2',
         'statehood_year': '2'
     },   
     {
         'abbreviation': '4', 'answer': '8',
-        'state': 'four_plus_four', 'capital': '4',
+        'state': '4_+_4', 'capital': '4',
         'statehood_year': '4'
     },
     {
         'abbreviation': '2', 'answer': '10',
-        'state': 'five_plus_five', 'capital': '2',
+        'state': '5_+_5', 'capital': '2',
         'statehood_year': '2'
     },   
     {
-        'abbreviation': '4', 'answer': '12',
-        'state': 'six_plus_six', 'capital': '4',
+        'abbreviation': '4', 'answer': '20',
+        'state': '10_+_10', 'capital': '4',
         'statehood_year': '4'
     },
       ]
@@ -166,18 +168,18 @@ MULTIPLICATION_LIST = [
         'statehood_year': '2'
     },   
     {
-        'abbreviation': '4', 'answer': '400',
-        'state': 'fourty_multiply_ten', 'capital': '4',
+        'abbreviation': '4', 'answer': '40',
+        'state': 'four_multiply_ten', 'capital': '4',
         'statehood_year': '4'
     },
     {
-        'abbreviation': '2', 'answer': '450',
-        'state': 'fifty_multiply_nine', 'capital': '2',
+        'abbreviation': '2', 'answer': '45',
+        'state': 'five_multiply_nine', 'capital': '2',
         'statehood_year': '2'
     },   
     {
-        'abbreviation': '4', 'answer': '420',
-        'state': 'sixty_multiply_eleven', 'capital': '4',
+        'abbreviation': '4', 'answer': '66',
+        'state': 'six_multiply_eleven', 'capital': '4',
         'statehood_year': '4'
     },
       ]
@@ -222,13 +224,15 @@ SKILL_TITLE = "Math Tutor Quiz Game"
 #                     "Which topic would you like to choose? "
 #                     "Addition, subtraction, multiplication or division? "
 #                   )
-WELCOME_MESSAGE = ( "Welcome to the Math Quiz Game!  "
+WELCOME_MESSAGE = ( "Welcome to the Math Tutor One Two Three!  "
                     "What is your name? "
                   )
                   
-MAX_QUESTIONS = 2
+MAX_QUESTIONS = 3
 
-START_QUIZ_MESSAGE = ("This is {}. I will ask you 5 questions ")
+MAX_ALL_QUESTIONS = 2*MAX_QUESTIONS
+
+START_QUIZ_MESSAGE = ("This is {} . I will ask you 3 questions ")
 
 
 START_TOPIC_MESSAGE = ("There are four topics of math questions you can choose from: addition, multiplication, subtraction and division ")
@@ -236,10 +240,16 @@ START_TOPIC_MESSAGE = ("There are four topics of math questions you can choose f
 HELLO_MESSAGE = ("Hi! {}. Are you ready for the quiz? " 
                 " There are four topics  you can choose: addition, multiplication, subtraction and division ")
 
-NEXT_LEVEL_MESSAGE = ("Well done! You have finished all the questions.  "
-                      "Do you wanna play next level or exit?")
+NEXT_LEVEL_MESSAGE = ("You have finished all the questions " 
+                      "If you keep challenging the next level and get high score you will get a mysterious gift "
+                      "Do you wanna play next level or exit? ")
 
-EXIT_SKILL_MESSAGE = ("Thank you for playing the Math Tutor Quiz Game!  "
+JOKE_MESSAGE = ("Well done! You got a high score so I am going to reward you with a joke  "
+                      "Here is the joke: ")
+MATH_MESSAGE = ("Ouch! You can do better next time so I am going to give you a math knowledge to help improve your math  "
+                      "Here is the math fact: ")
+
+EXIT_SKILL_MESSAGE = (" Thank you for playing the Math Tutor Quiz Game!  "
                       "Let's play again soon!")
 
 REPROMPT_SPEECH = "Which math questions would you like to know about?"
