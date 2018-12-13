@@ -89,6 +89,16 @@ def get_joke():
     data = r.json() 
 
     return str(data['value']['joke'])
+    
+def get_math():
+    PARAMS = {} 
+    URL = "http://numbersapi.com/random/math?json"
+    r = requests.get(url = URL, params = PARAMS) 
+    #extracting data in json format 
+    data = r.json() 
+
+    return str(data['text'])
+  
   
 
 def get_card_title(item):
@@ -139,7 +149,7 @@ def __get_attr_for_speech(attr):
 def get_question_without_ordinal(attr, item):
     return "What is the {} of {}. ".format(
         __get_attr_for_speech(attr), __get_attr_for_speech(item["state"]))
-
+    
 
 def get_question(counter, attr, item):
     """Return response text for nth question to the user."""
@@ -224,6 +234,23 @@ def ask_subtraction(handler_input):
 
     return get_question(attr["counter"], random_property, random_state)
 
+def ask_subtraction_levelUp(handler_input):
+    # (HandlerInput) -> None
+    """Get a random state and property, return question about it."""
+    random_state = get_random_state(data_1.SUBTRACTION_LIST)
+    random_property = get_random_state_property()
+
+    attr = handler_input.attributes_manager.session_attributes
+
+    attr["quiz_item"] = random_state
+    attr["quiz_attr"] = random_property
+    attr["counter"] += 1
+
+    handler_input.attributes_manager.session_attributes = attr
+
+    return get_question(attr["counter"], random_property, random_state)
+
+
 def ask_multiplication(handler_input):
     # (HandlerInput) -> None
     """Get a random state and property, return question about it."""
@@ -240,6 +267,23 @@ def ask_multiplication(handler_input):
 
     return get_question(attr["counter"], random_property, random_state)
 
+def ask_multiplication_levelUp(handler_input):
+    # (HandlerInput) -> None
+    """Get a random state and property, return question about it."""
+    random_state = get_random_state(data_1.MULTIPLICATION_LIST)
+    random_property = get_random_state_property()
+
+    attr = handler_input.attributes_manager.session_attributes
+
+    attr["quiz_item"] = random_state
+    attr["quiz_attr"] = random_property
+    attr["counter"] += 1
+
+    handler_input.attributes_manager.session_attributes = attr
+
+    return get_question(attr["counter"], random_property, random_state)
+
+
 def ask_division(handler_input):
     # (HandlerInput) -> None
     """Get a random state and property, return question about it."""
@@ -255,6 +299,23 @@ def ask_division(handler_input):
     handler_input.attributes_manager.session_attributes = attr
 
     return get_question(attr["counter"], random_property, random_state)
+
+def ask_division_levelUp(handler_input):
+    # (HandlerInput) -> None
+    """Get a random state and property, return question about it."""
+    random_state = get_random_state(data_1.DIVISION_LIST)
+    random_property = get_random_state_property()
+
+    attr = handler_input.attributes_manager.session_attributes
+
+    attr["quiz_item"] = random_state
+    attr["quiz_attr"] = random_property
+    attr["counter"] += 1
+
+    handler_input.attributes_manager.session_attributes = attr
+
+    return get_question(attr["counter"], random_property, random_state)
+
 
 
 def get_speechcon(correct_answer):
