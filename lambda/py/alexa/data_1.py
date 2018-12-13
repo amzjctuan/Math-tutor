@@ -33,99 +33,99 @@ ADDITION_LIST = [
 
 SUBTRACTION_LIST = [
     {
-        'abbreviation': '2', 'answer': '0',
-        'state': 'one_minus_one', 'capital': '2',
+        'abbreviation': '2', 'answer': '945',
+        'state': '1000_-_55', 'capital': '2',
         'statehood_year': '2'
     },   
     {
-        'abbreviation': '4', 'answer': '1',
-        'state': 'two_minus_one', 'capital': '4',
+        'abbreviation': '4', 'answer': '1178',
+        'state': '1234_-_56', 'capital': '4',
         'statehood_year': '4'
     },
     {
-        'abbreviation': '2', 'answer': '28',
-        'state': 'thirty_minus_two', 'capital': '2',
+        'abbreviation': '2', 'answer': '1764',
+        'state': '2345_-_581', 'capital': '2',
         'statehood_year': '2'
     },   
     {
-        'abbreviation': '4', 'answer': '30',
-        'state': 'fourty_minus_ten', 'capital': '4',
+        'abbreviation': '4', 'answer': '2711',
+        'state': '3000_-_289', 'capital': '4',
         'statehood_year': '4'
     },
     {
-        'abbreviation': '2', 'answer': '41',
-        'state': 'fifty_minus_nine', 'capital': '2',
+        'abbreviation': '2', 'answer': '5468',
+        'state': '5555_-_87', 'capital': '2',
         'statehood_year': '2'
     },   
     {
-        'abbreviation': '4', 'answer': '49',
-        'state': 'sixty_minus_eleven', 'capital': '4',
+        'abbreviation': '4', 'answer': '6268',
+        'state': '6991_-_723', 'capital': '4',
         'statehood_year': '4'
     },
       ]
 
 MULTIPLICATION_LIST = [
     {
-        'abbreviation': '2', 'answer': '1',
-        'state': 'one_multiply_one', 'capital': '2',
+        'abbreviation': '2', 'answer': '121',
+        'state': '11_multiply_11', 'capital': '2',
         'statehood_year': '2'
     },   
     {
-        'abbreviation': '4', 'answer': '4',
-        'state': 'two_multiply_two', 'capital': '4',
+        'abbreviation': '4', 'answer': '1650',
+        'state': '55_multiply_30', 'capital': '4',
         'statehood_year': '4'
     },
     {
-        'abbreviation': '2', 'answer': '60',
-        'state': 'thirty_multiply_two', 'capital': '2',
+        'abbreviation': '2', 'answer': '4760',
+        'state': '68_multiply_70', 'capital': '2',
         'statehood_year': '2'
     },   
     {
-        'abbreviation': '4', 'answer': '400',
-        'state': 'fourty_multiply_ten', 'capital': '4',
+        'abbreviation': '4', 'answer': '2772',
+        'state': '28_multiply_99', 'capital': '4',
         'statehood_year': '4'
     },
     {
-        'abbreviation': '2', 'answer': '450',
-        'state': 'fifty_multiply_nine', 'capital': '2',
+        'abbreviation': '2', 'answer': '2125',
+        'state': '85_multiply_25', 'capital': '2',
         'statehood_year': '2'
     },   
     {
-        'abbreviation': '4', 'answer': '420',
-        'state': 'sixty_multiply_eleven', 'capital': '4',
+        'abbreviation': '4', 'answer': '2254',
+        'state': '98_multiply_23', 'capital': '4',
         'statehood_year': '4'
     },
       ]
 
 DIVISION_LIST = [
     {
-        'abbreviation': '2', 'answer': '5',
-        'state': 'ten_divide_two', 'capital': '2',
+        'abbreviation': '2', 'answer': '1',
+        'state': '55_divide_5', 'capital': '2',
         'statehood_year': '2'
     },   
     {
-        'abbreviation': '4', 'answer': '10',
-        'state': 'one-hundred_divide_ten', 'capital': '4',
+        'abbreviation': '4', 'answer': '11',
+        'state': '121_divide_11', 'capital': '4',
         'statehood_year': '4'
     },
     {
-        'abbreviation': '2', 'answer': '7',
-        'state': 'forty-nine_divide_seven', 'capital': '2',
+        'abbreviation': '2', 'answer': '89',
+        'state': '1068_divide_12', 'capital': '2',
         'statehood_year': '2'
     },   
     {
-        'abbreviation': '4', 'answer': '9',
-        'state': 'eighty-one_divide_nine', 'capital': '4',
+        'abbreviation': '4', 'answer': '57',
+        'state': '3591_divide_63', 'capital': '4',
         'statehood_year': '4'
     },
     {
-        'abbreviation': '2', 'answer': '7',
-        'state': 'twenty-one_divide_three', 'capital': '2',
+        'abbreviation': '2', 'answer': '96',
+        'state': '2208_divide_23', 'capital': '2',
         'statehood_year': '2'
     },   
     {
-        'abbreviation': '4', 'answer': '5',
-        'state': 'twenty-five_divide_five', 'capital': '4',
+        'abbreviation': '4', 'answer': '78',
+        'state': '1950_divide_25', 'capital': '4',
         'statehood_year': '4'
     },
       ]
